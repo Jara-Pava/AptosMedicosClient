@@ -1,0 +1,541 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{B346B3A6-E889-4F7C-A50D-B589017948B9}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>DesarrollosQAS</RootNamespace>
+    <AssemblyName>DesarrollosQAS</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <UseIISExpress>true</UseIISExpress>
+    <Use64BitIISExpress />
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="DevExpress.ExpressApp.TreeListEditors.v22.1, Version=22.1.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\..\Program Files\DevExpress 22.1\Components\Bin\Framework\DevExpress.ExpressApp.TreeListEditors.v22.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Web.ASPxTreeList.v22.1, Version=22.1.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\..\Program Files\DevExpress 22.1\Components\Bin\Framework\DevExpress.Web.ASPxTreeList.v22.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Web.Resources.v22.1, Version=22.1.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="DevExpress.Data.v22.1, Version=22.1.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.Web.ASPxThemes.v22.1, Version=22.1.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.RichEdit.v22.1.Core, Version=22.1.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.RichEdit.v22.1.Export, Version=22.1.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.Printing.v22.1.Core, Version=22.1.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.Web.v22.1, Version=22.1.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.XtraScheduler.v22.1.Core, Version=22.1.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.XtraScheduler.v22.1.Core.Desktop, Version=22.1.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.Web.ASPxScheduler.v22.1, Version=22.1.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Account\Register.aspx" />
+    <Content Include="Account\SignIn.aspx" />
+    <Content Include="App_Data\ApplicationMenuDataSource.sitemap" />
+    <Content Include="App_Data\Article.html" />
+    <Content Include="App_Data\ArticleContents.xml" />
+    <Content Include="App_Data\Navigation.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="App_Data\Overview.html" />
+    <Content Include="App_Data\OverviewContents.xml" />
+    <Content Include="Content\Content.css" />
+    <Content Include="Content\GridView.css" />
+    <Content Include="Content\GridView.js" />
+    <Content Include="Content\Images\adaptive-menu.svg" />
+    <Content Include="Content\Images\add.svg" />
+    <Content Include="Content\Images\application.svg" />
+    <Content Include="Content\Images\Article-white.svg" />
+    <Content Include="Content\Images\Article.svg" />
+    <Content Include="Content\Images\back.svg" />
+    <Content Include="Content\Images\delete.svg" />
+    <Content Include="Content\Images\double-close.svg" />
+    <Content Include="Content\Images\double.svg" />
+    <Content Include="Content\Images\edit.svg" />
+    <Content Include="Content\Images\export.svg" />
+    <Content Include="Content\Images\eye-button-hide.svg" />
+    <Content Include="Content\Images\eye-button.svg" />
+    <Content Include="Content\Images\GridView-white.svg" />
+    <Content Include="Content\Images\GridView.svg" />
+    <Content Include="Content\Images\Home-white.svg" />
+    <Content Include="Content\Images\Home.svg" />
+    <Content Include="Content\Images\image-sample.png" />
+    <Content Include="Content\Images\kind1-white.svg" />
+    <Content Include="Content\Images\kind1.svg" />
+    <Content Include="Content\Images\kind2-white.svg" />
+    <Content Include="Content\Images\kind2.svg" />
+    <Content Include="Content\Images\logo-small.svg" />
+    <Content Include="Content\Images\logo.svg" />
+    <Content Include="Content\Images\menu.svg" />
+    <Content Include="Content\Images\Overview\article.png" />
+    <Content Include="Content\Images\Overview\demo.png" />
+    <Content Include="Content\Images\Overview\grid.png" />
+    <Content Include="Content\Images\Overview\login.gif" />
+    <Content Include="Content\Images\Overview\login.png" />
+    <Content Include="Content\Images\Overview\menu.gif" />
+    <Content Include="Content\Images\Overview\scheduler.png" />
+    <Content Include="Content\Images\Overview\sidebar.gif" />
+    <Content Include="Content\Images\Overview\sticky-footer.gif" />
+    <Content Include="Content\Images\Overview\toolbar.gif" />
+    <Content Include="Content\Images\print.svg" />
+    <Content Include="Content\Images\priority1-white.svg" />
+    <Content Include="Content\Images\priority1.svg" />
+    <Content Include="Content\Images\priority2-white.svg" />
+    <Content Include="Content\Images\priority2.svg" />
+    <Content Include="Content\Images\priority3-white.svg" />
+    <Content Include="Content\Images\priority3.svg" />
+    <Content Include="Images\catalogo.png" />
+    <Content Include="Images\circulo-asginacion.png" />
+    <Content Include="Images\circulo-asig.png" />
+    <Content Include="Images\cubitos.png" />
+    <Content Include="Images\empresa_contra.png" />
+    <Content Include="Images\industria.png" />
+    <Content Include="Images\proyecto.png" />
+    <Content Include="Images\rol-de-usuario.png" />
+    <Content Include="Content\Images\Scheduler-white.svg" />
+    <Content Include="Content\Images\Scheduler.svg" />
+    <Content Include="Content\Images\search-selected.svg" />
+    <Content Include="Content\Images\search.svg" />
+    <Content Include="Content\Images\shield.svg" />
+    <Content Include="Content\Images\sign-out.svg" />
+    <Content Include="Content\Images\user.svg" />
+    <Content Include="Content\Layout.css" />
+    <Content Include="Content\Photo\Alberto_Alonso.jpg" />
+    <Content Include="Content\Photo\Alfredo_Gomez.jpg" />
+    <Content Include="Content\Photo\Andrew_Lee.jpg" />
+    <Content Include="Content\Photo\Angela_Murphy.jpg" />
+    <Content Include="Content\Photo\Clarence_Nath.jpg" />
+    <Content Include="Content\Photo\Colin_He.jpg" />
+    <Content Include="Content\Photo\Connor_Jenkins.jpg" />
+    <Content Include="Content\Photo\Connor_Lopez.jpg" />
+    <Content Include="Content\Photo\Destiny_Clark.jpg" />
+    <Content Include="Content\Photo\Diana_Martin.jpg" />
+    <Content Include="Content\Photo\Gary_Rubio.jpg" />
+    <Content Include="Content\Photo\Heidi_Lopez.jpg" />
+    <Content Include="Content\Photo\Jesse_Gonzalez.jpg" />
+    <Content Include="Content\Photo\Jessie_She.jpg" />
+    <Content Include="Content\Photo\Julia_Bell.jpg" />
+    <Content Include="Content\Photo\Julia_Evans.jpg" />
+    <Content Include="Content\Photo\Katelyn_Lopez.jpg" />
+    <Content Include="Content\Photo\Kevin_Collins.jpg" />
+    <Content Include="Content\Photo\Logan_Hernandez.jpg" />
+    <Content Include="Content\Photo\Maria_Hernandez.jpg" />
+    <Content Include="Content\Photo\Martha_Gao.jpg" />
+    <Content Include="Content\Photo\Megan_Sanchez.jpg" />
+    <Content Include="Content\Photo\Miguel_Jones.jpg" />
+    <Content Include="Content\Photo\Naomi_Moreno.jpg" />
+    <Content Include="Content\Photo\Nathan_Bryant.jpg" />
+    <Content Include="Content\Photo\Rafael_Raje.jpg" />
+    <Content Include="Content\Photo\Rebekah_Raman.jpg" />
+    <Content Include="Content\Photo\Shannon_Sanz.jpg" />
+    <Content Include="Content\Photo\User.png" />
+    <Content Include="Content\Photo\Xavier_Richardson.jpg" />
+    <Content Include="Content\Scheduler.css" />
+    <Content Include="Content\Scheduler.js" />
+    <Content Include="Content\Script.js" />
+    <Content Include="Content\SignInRegister.css" />
+    <Content Include="Content\SignInRegister.js" />
+    <Content Include="Content\Site.css" />
+    <Content Include="Content\Site.js" />
+    <Content Include="Default.aspx" />
+    <Content Include="Global.asax" />
+    <Content Include="Images\add-friend.png" />
+    <Content Include="Images\add.png" />
+    <Content Include="Images\AddUsers.png" />
+    <Content Include="Images\AltProveedore.png" />
+    <Content Include="Images\archivo-adjunto.png" />
+    <Content Include="Images\AreaColor.png" />
+    <Content Include="Images\arrow-down-sign-to-navigate.png" />
+    <Content Include="Images\arrow-left.svg" />
+    <Content Include="Images\arrow-right.svg" />
+    <Content Include="Images\Ayuda.png" />
+    <Content Include="Images\Buscar.png" />
+    <Content Include="Images\campana.png" />
+    <Content Include="Images\cancel - Copy.png" />
+    <Content Include="Images\cancel.png" />
+    <Content Include="Images\Catalogos.svg" />
+    <Content Include="Images\check.png" />
+    <Content Include="Images\CheckListColor.png" />
+    <Content Include="Images\checlist.png" />
+    <Content Include="Images\cheque.png" />
+    <Content Include="Images\CierreColor.png" />
+    <Content Include="Images\circulo %281%29.png" />
+    <Content Include="Images\circulo-amarillo.png" />
+    <Content Include="Images\circulo-azul.png" />
+    <Content Include="Images\circulo-naranja.png" />
+    <Content Include="Images\circulo-rojo.png" />
+    <Content Include="Images\circulo-verde.png" />
+    <Content Include="Images\circulo.png" />
+    <Content Include="Images\clear-button.svg" />
+    <Content Include="Images\clock.png" />
+    <Content Include="Images\comprobar.png" />
+    <Content Include="Images\Copias.png" />
+    <Content Include="Images\DatosCRM.png" />
+    <Content Include="Images\delete.png" />
+    <Content Include="Images\departamento.svg" />
+    <Content Include="Images\descarga.png" />
+    <Content Include="Images\descargaColor.png" />
+    <Content Include="Images\download.png" />
+    <Content Include="Images\download2.png" />
+    <Content Include="Images\edit.png" />
+    <Content Include="Images\editarColor.png" />
+    <Content Include="Images\edits.png" />
+    <Content Include="Images\EjecucionColor.png" />
+    <Content Include="Images\Equipos.svg" />
+    <Content Include="Images\estado.svg" />
+    <Content Include="Images\Excel2.png" />
+    <Content Include="Images\ExcelColor.png" />
+    <Content Include="Images\eyes.png" />
+    <Content Include="Images\FiltrarColor.png" />
+    <Content Include="Images\FiltrarColor2.png" />
+    <Content Include="Images\Firma.png" />
+    <Content Include="Images\FirmaTecnico.svg" />
+    <Content Include="Images\follow.png" />
+    <Content Include="Images\Gestion.svg" />
+    <Content Include="Images\global.svg" />
+    <Content Include="Images\grupoColor.png" />
+    <Content Include="Images\GuardarColor.png" />
+    <Content Include="Images\home.png" />
+    <Content Include="Images\home.svg" />
+    <Content Include="Images\Horarios.png" />
+    <Content Include="Images\icoFianzas.png" />
+    <Content Include="Images\icoGarantias.png" />
+    <Content Include="Images\iconfinder_SharePoint_682676.png" />
+    <Content Include="Images\ImageSolicitudes.png" />
+    <Content Include="Images\info.png" />
+    <Content Include="Images\informe.png" />
+    <Content Include="Images\Intervalo.png" />
+    <Content Include="Images\ITAssetsImage.png" />
+    <Content Include="Images\LogoTechint.png" />
+    <Content Include="Images\LogOut.svg" />
+    <Content Include="Images\Mantenimiento.png" />
+    <Content Include="Images\Marca.svg" />
+    <Content Include="Images\menu.svg" />
+    <Content Include="Images\Modelo.svg" />
+    <Content Include="Images\Mouse.svg" />
+    <Content Include="Images\mytask.png" />
+    <Content Include="Images\NoRealizado.png" />
+    <Content Include="Images\nuevoColor.png" />
+    <Content Include="Images\OfertaColor.png" />
+    <Content Include="Images\Personal.png" />
+    <Content Include="Images\personales.png" />
+    <Content Include="Images\Planes.svg" />
+    <Content Include="Images\Procesos.png" />
+    <Content Include="Images\Propiedad.svg" />
+    <Content Include="Images\proteger.png" />
+    <Content Include="Images\Proveedores.svg" />
+    <Content Include="Images\proyecto.svg" />
+    <Content Include="Images\ProyectoColor.png" />
+    <Content Include="Images\Realizado.png" />
+    <Content Include="Images\recargar.png" />
+    <Content Include="Images\RechazaPR.png" />
+    <Content Include="Images\rechazar.png" />
+    <Content Include="Images\refresh.png" />
+    <Content Include="Images\reload.png" />
+    <Content Include="Images\Reporte.png" />
+    <Content Include="Images\ReporteGiros.svg" />
+    <Content Include="Images\Reportes.svg" />
+    <Content Include="Images\ReportesCelular.png" />
+    <Content Include="Images\Responsiva.svg" />
+    <Content Include="Images\Responsivas.png" />
+    <Content Include="Images\returnColor.png" />
+    <Content Include="Images\returnNegro.png" />
+    <Content Include="Images\right-arrow.png" />
+    <Content Include="Images\roles.svg" />
+    <Content Include="Images\RolesColor.png" />
+    <Content Include="Images\save.png" />
+    <Content Include="Images\search.svg" />
+    <Content Include="Images\Seguridad.png" />
+    <Content Include="Images\Seguridad.svg" />
+    <Content Include="Images\SeguridadColor.png" />
+    <Content Include="Images\si.png" />
+    <Content Include="Images\solicitud.png" />
+    <Content Include="Images\SubCategoriaColor.png" />
+    <Content Include="Images\subirFile.png" />
+    <Content Include="Images\submit.png" />
+    <Content Include="Images\SyncDataExt.png" />
+    <Content Include="Images\TareasColor.png" />
+    <Content Include="Images\TarjetaAcceso.svg" />
+    <Content Include="Images\teamColor.png" />
+    <Content Include="Images\Techint Nuevo.png" />
+    <Content Include="Images\techint.ico" />
+    <Content Include="Images\TechintEC_logo_ESP_White_1280.png" />
+    <Content Include="Images\TechintEC_logo_SPA_FullColor.jpg" />
+    <Content Include="Images\Teclado.svg" />
+    <Content Include="Images\Telefonia.svg" />
+    <Content Include="Images\TelefonoCel.svg" />
+    <Content Include="Images\TipoCambio.svg" />
+    <Content Include="Images\TipoEquipo.svg" />
+    <Content Include="Images\tipotemplate.png" />
+    <Content Include="Images\tipo_visita.png" />
+    <Content Include="Images\ToolsColor.png" />
+    <Content Include="Images\Trash.png" />
+    <Content Include="Images\upload.png" />
+    <Content Include="Images\upload3.png" />
+    <Content Include="Images\UsuarioRol.png" />
+    <Content Include="Images\Usuarios.png" />
+    <Content Include="Images\usuarios.svg" />
+    <Content Include="Images\usuariosasignaciones.svg" />
+    <Content Include="Images\validacion.png" />
+    <Content Include="Images\vercolor.png" />
+    <Content Include="Images\verPonderado.png" />
+    <Content Include="Images\VolverNegro.png" />
+    <Content Include="Images\XSALogo462x306.png" />
+    <Content Include="Pages\EmpresasContratistas.aspx" />
+    <Content Include="Pages\Modulos.aspx" />
+    <Content Include="Pages\Plantas.aspx" />
+    <Content Include="Pages\Proyectos.aspx" />
+    <Content Include="Pages\Roles.aspx" />
+    <Content Include="Pages\RolModulo.aspx" />
+    <Content Include="Pages\SinAcceso.aspx" />
+    <Content Include="Pages\SolicitudesAptosMedicos.aspx" />
+    <Content Include="Pages\TiposVisitas.aspx" />
+    <Content Include="SolicitudesEspeciales.aspx" />
+    <Content Include="SolicitudEspecial.aspx" />
+    <Content Include="SolicitudesRH.aspx" />
+    <Content Include="UserControls\Navigation.ascx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Root.master" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="UserControls\PopupMessages.ascx" />
+    <Content Include="Usuarios.aspx" />
+    <Content Include="Web.config" />
+    <Content Include="Images\Responsiva.pdf" />
+    <None Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <None Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Account\Register.aspx.cs">
+      <DependentUpon>Register.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Account\Register.aspx.designer.cs">
+      <DependentUpon>Register.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Account\SignIn.aspx.cs">
+      <DependentUpon>SignIn.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Account\SignIn.aspx.designer.cs">
+      <DependentUpon>SignIn.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Code\AuthHelper.cs" />
+    <Compile Include="Code\DBContext.cs" />
+    <Compile Include="Default.aspx.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Default.aspx.designer.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\EmpresasContratistas.aspx.cs">
+      <DependentUpon>EmpresasContratistas.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\EmpresasContratistas.aspx.designer.cs">
+      <DependentUpon>EmpresasContratistas.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Modulos.aspx.cs">
+      <DependentUpon>Modulos.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\Modulos.aspx.designer.cs">
+      <DependentUpon>Modulos.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Plantas.aspx.cs">
+      <DependentUpon>Plantas.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\Plantas.aspx.designer.cs">
+      <DependentUpon>Plantas.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Proyectos.aspx.cs">
+      <DependentUpon>Proyectos.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\Proyectos.aspx.designer.cs">
+      <DependentUpon>Proyectos.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Roles.aspx.cs">
+      <DependentUpon>Roles.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\Roles.aspx.designer.cs">
+      <DependentUpon>Roles.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\RolModulo.aspx.cs">
+      <DependentUpon>RolModulo.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\RolModulo.aspx.designer.cs">
+      <DependentUpon>RolModulo.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\SinAcceso.aspx.cs">
+      <DependentUpon>SinAcceso.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\SinAcceso.aspx.designer.cs">
+      <DependentUpon>SinAcceso.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\SolicitudesAptosMedicos.aspx.cs">
+      <DependentUpon>SolicitudesAptosMedicos.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\SolicitudesAptosMedicos.aspx.designer.cs">
+      <DependentUpon>SolicitudesAptosMedicos.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\TiposVisitas.aspx.cs">
+      <DependentUpon>TiposVisitas.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\TiposVisitas.aspx.designer.cs">
+      <DependentUpon>TiposVisitas.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Root.master.cs">
+      <DependentUpon>Root.master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Root.master.designer.cs">
+      <DependentUpon>Root.master</DependentUpon>
+    </Compile>
+    <Compile Include="SolicitudesEspeciales.aspx.cs">
+      <DependentUpon>SolicitudesEspeciales.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SolicitudesEspeciales.aspx.designer.cs">
+      <DependentUpon>SolicitudesEspeciales.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SolicitudEspecial.aspx.cs">
+      <DependentUpon>SolicitudEspecial.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SolicitudEspecial.aspx.designer.cs">
+      <DependentUpon>SolicitudEspecial.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SolicitudesRH.aspx.cs">
+      <DependentUpon>SolicitudesRH.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SolicitudesRH.aspx.designer.cs">
+      <DependentUpon>SolicitudesRH.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Navigation.ascx.cs">
+      <DependentUpon>Navigation.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserControls\Navigation.ascx.designer.cs">
+      <DependentUpon>Navigation.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\PopupMessages.ascx.cs">
+      <DependentUpon>PopupMessages.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserControls\PopupMessages.ascx.designer.cs">
+      <DependentUpon>PopupMessages.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Usuarios.aspx.cs">
+      <DependentUpon>Usuarios.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Usuarios.aspx.designer.cs">
+      <DependentUpon>Usuarios.aspx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DataAccessDesarrollos\DataAccessDesarrollos.csproj">
+      <Project>{7ebc7106-359f-430e-8a04-5573ba81783d}</Project>
+      <Name>DataAccessDesarrollos</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\licenses.licx" />
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>59657</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:59657/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

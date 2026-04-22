@@ -1,0 +1,302 @@
+﻿body {
+    font: 14px "Helvetica Neue", Helvetica, "Droid Sans", Tahoma, Geneva, sans-serif;
+}
+
+.panelContent {
+    padding-top: 15px;
+}
+
+
+
+.header-panel {
+    padding: 0 !important;
+    border-width: 0 !important;
+    box-shadow: 0px 2px 10px 0 rgba(0,0,0,0.1);
+    padding-right: 20px;
+}
+.header-panel > hola{
+    padding-left:20px;
+}
+
+.menu-button {
+    float: left;
+    margin-left: 30px;
+    background-image: url('../Images/menu.svg');
+    background-repeat: no-repeat;
+    background-size: 26px;
+    background-position: center;
+    box-shadow: none;
+}
+
+.menu-Logout {
+    float: left;
+    background-image: url('../Images/LogOut.svg');
+    background-color: brown;
+    background-repeat: no-repeat;
+    background-size: 26px;
+    background-position: center;
+    box-shadow: none;
+}
+
+.page-header {
+    padding-top: 12px;
+    padding-left: 16px;
+    float: left;
+    font: 14px "Helvetica Neue", Helvetica, "Droid Sans", Tahoma, Geneva, sans-serif;
+    font-size: 30px;
+}
+
+main {
+    box-sizing: border-box;
+    display: block;
+    width: 100%;
+    max-width: 1020px;
+    padding: 8px 12px;
+}
+
+@media (min-width: 1200px) {
+    main {
+        padding: 16px 32px;
+    }
+}
+
+
+.navigation-panel {
+    box-sizing: border-box;
+    width: 220px;
+    max-width: 100%;
+    background-color: white !important;
+    border-width: 0 !important;
+    box-shadow: 0px 2px 10px 0 rgba(0,0,0,0.1);
+}
+
+.search-wrapper {
+    padding: 16px;
+}
+
+.search-input {
+    height: 32px;
+    width: 100%;
+    padding-left: 30px;
+    background-image: url('../Images/search.svg');
+    background-repeat: no-repeat;
+    background-size: 22px;
+    background-position: 9px 5px;
+}
+
+    .search-input input {
+        color: #777 !important;
+    }
+
+    .search-input .clear-button {
+        height: 18px;
+        width: 18px;
+        background-image: url('../Images/clear-button.svg');
+        background-repeat: no-repeat;
+        background-size: 18px;
+    }
+
+.search-results {
+    height: 0;
+    overflow: hidden;
+    transition: height 0.4s ease 0s;
+}
+
+    .search-results .no-results-container {
+        padding-top: 16px;
+        font: 14px "Helvetica Neue", Helvetica, "Droid Sans", Tahoma, Geneva, sans-serif;
+    }
+
+.search-results-nav-bar {
+    margin-top: 16px;
+    margin-bottom: -13px;
+}
+
+    .search-results-nav-bar .search-result-group-content {
+        border-width: 0 !important;
+        background-color: white;
+    }
+
+    .search-results-nav-bar .search-result-item a {
+        color: #777;
+        padding: 6px 12px 8px !important;
+        text-decoration: none !important;
+    }
+
+.search-result-item .title {
+    display: block;
+    padding-bottom: 6px;
+    font-weight: 600;
+}
+
+.search-result-item .tags {
+    font-size: 12px;
+}
+
+.search-result-item .tag {
+    margin-right: 4px;
+    padding: 1px 4px;
+    border: 1px #777 solid;
+    border-radius: 5px;
+}
+
+.search-results-nav-bar .search-result-item-hovered {
+    background-color: #acacac;
+}
+
+.search-results-nav-bar .search-result-item-selected {
+    background-color: #0096d6;
+}
+
+    .search-results-nav-bar .search-result-item-hovered a,
+    .search-results-nav-bar .search-result-item-selected a {
+        color: white;
+    }
+
+    .search-results-nav-bar .search-result-item-hovered .tag,
+    .search-results-nav-bar .search-result-item-selected .tag {
+        border-color: white;
+    }
+
+.navigation-breadcrumbs-button {
+    padding: 12px 2px 10px 10px;
+    border-top: 1px #f0f0f0 solid;
+    background-color: white;
+    color: black;
+    box-shadow: 0px 2px 10px 0 rgba(0,0,0,0.1);
+}
+
+    .navigation-breadcrumbs-button .icon,
+    .navigation-breadcrumbs-button .icon {
+        height: 16px;
+        width: 16px;
+        padding-right: 5px;
+        background-size: 16px;
+        background-position: left center;
+        background-repeat: no-repeat;
+    }
+
+    .navigation-breadcrumbs-button .arrow-left {
+        background-image: url('../Images/arrow-left.svg');
+    }
+
+    .navigation-breadcrumbs-button .arrow-right {
+        background-image: url('../Images/arrow-right.svg');
+    }
+
+.breadCrumbs {
+    display: block;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    padding: 0 18px 0 1px;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.nav-tree-view a {
+    color: #484848;
+}
+
+    .nav-tree-view a,
+    .nav-tree-view a:hover {
+        text-decoration: none;
+    }
+
+.nav-tree-view .dxtv-subnd {
+    margin-left: 0;
+}
+
+    .nav-tree-view .dxtv-subnd .node:not(.group):not(.introPage) {
+        padding-left: 0px;
+    }
+
+.nav-tree-view .elbow {
+    box-sizing: border-box;
+    margin-top: 0;
+    height: 28px;
+    width: 33px;
+}
+
+    .nav-tree-view .elbow:before {
+        content: ''; /*Disable ripple*/
+    }
+
+    .nav-tree-view .elbow img {
+        margin-left: 14px;
+    }
+
+.nav-tree-view .root-sub-tree .elbow img {
+    visibility: hidden;
+}
+
+.nav-tree-view .node {
+    box-sizing: border-box;
+    margin-top: 0;
+    width: calc(100% - 33px);
+    border-width: 0;
+    padding-top: 5px;
+    height: 28px;
+}
+
+.nav-tree-view li.selected > .elbow,
+.nav-tree-view li.selected > .node,
+.nav-tree-view li.hovered > .elbow,
+.nav-tree-view li.hovered > .node {
+    background-color: #f0f0f0;
+    color: #484848;
+}
+
+.nav-tree-view ul li ul li.selected > .elbow,
+.nav-tree-view ul li ul li.selected > .node {
+    background-color: #0096d6;
+    color: white;
+}
+
+.nav-tree-view li.selected > .elbow {
+    border-left: 4px solid #0096d6;
+}
+
+.buttonRound {
+    border-radius: 10%;
+}
+
+
+.dxgvStatusBar_XafTheme a[data-args*=UpdateEdit] {
+    display: none;
+}
+
+/* =============================================
+   DevExpress Office365 Theme Overrides (Global)
+   ============================================= */
+tr > .dxflCaptionCell_Office365 {
+    padding-bottom: 15px !important;
+}
+
+.dxflGroupBox_Office365 {
+    margin-bottom: 0px;
+    padding: 0 0 12px;
+    text-align: center;
+}
+
+.dxpLite_Office365 .dxp-button:not(.dxp-disabledButton):hover {
+    background-color: teal;
+}
+
+/* =============================================
+   DevExpress GridView Header Styles (Global)
+   ============================================= */
+.dxgvHeader_Office365 {
+    background-color: #353943 !important;
+    color: white !important;
+    font-weight: bold !important;
+}
+
+.dxgvAdaptiveHeaderPanel_Office365 {
+    background-color: #353943 !important;
+    color: white !important;
+    font-weight: bold !important;
+}
+
+.dxgvHeader_Office365 {
+    background-color: teal;
+}

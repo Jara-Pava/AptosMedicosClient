@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<namespace Url="javascript:void(0);" Title="DevExpress.Web.ASPxCallback Namespace">
+	<!--<page Url="../Default.aspx" Title="Home" Image="../Images/home.svg" Name="home"/>-->
+	<!--<page Url="../SolicitudesEspeciales.aspx" Title="Solicitudes" Image="../Images/solicitud.png" Name="solicitudesEspeciales"/>
+	<group Title="Catalogos" Image="../Images/catalogo.png" Name="catalogos">
+		<page Url="../Pages/EmpresasContratistas.aspx" Title="Empresa Contratista" Image="../Images/empresa_contra.png" Name="empresasContratista"/>
+		<page Url="../Pages/Plantas.aspx" Title="Plantas" Image="../Images/industria.png" Name="plantas"/>
+		<page Url="../Pages/Proyectos.aspx" Title="Proyectos" Image="../Images/proyecto.png" Name="proyectos"/>
+		<page Url="../Pages/TiposVisitas.aspx" Title="Tipos Visitas" Image="../Images/tipo_visita.png" Name="tipoVisita"/>
+	</group>
+	<group Title="Seguridad" Image="../Images/proteger.png" Name="seguridad">
+		<page Url="../Usuarios.aspx" Title="Usuarios" Image="../Images/usuarios.svg" Name="usuarios"/>
+		<page Url="../Pages/Roles.aspx" Title="Roles" Image="../Images/rol-de-usuario.png" Name="roles"/>
+		<page Url="../Pages/Modulos.aspx" Title="Modulos" Image="../Images/cubitos.png" Name="Modulos"/>
+	</group>-->
+
+	<page Url="../Pages/SolicitudesAptosMedicos.aspx" Title="Solicitudes Aptos" Image="../Images/solicitud.png" Name="solicitudesAptosMedicos"/>
+	<!--<page Url="../SolicitudesRH.aspx" Title="SolicitudesRH" Image="../Images/home.svg" Name="solicitudes"/>-->
+	<!--<page Url="../SolicitudEspecial.aspx" Title="Solicitud" Image="../Images/solicitud.png" Name="solicitudEspecial"/>-->
+</namespace>

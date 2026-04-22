@@ -1,0 +1,80 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Root.master.cs" Inherits="DesarrollosQAS.Root" %>
+
+<%@ Register Src="~/UserControls/Navigation.ascx" TagPrefix="uc" TagName="Navigation" %>
+
+<!DOCTYPE html>
+<html lang="en">
+<head runat="server">
+    <meta name="viewport" content="width=device-width, user-scalable=no, maximum-scale=1.0, minimum-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=11" />
+    <title>APTOS MEDICOS EMHA</title>
+    <link rel="shortcut icon" href="~/Images/techint.ico" type="image/vnd.microsoft.icon" />
+</head>
+<body>
+    <form id="form1" runat="server">
+        <style>
+            .nav-tree-view .dxtv-subnd {
+                margin-left: 18px;
+            }
+        </style>
+        <asp:ScriptManager runat="server">
+            <Scripts>
+                <asp:ScriptReference Path="~/Content/Site.js" />
+            </Scripts>
+        </asp:ScriptManager>
+        <header>
+            <dx:ASPxPanel runat="server" ClientInstanceName="TopPanel" CssClass="header-panel" FixedPosition="WindowTop" BackColor="#353943">
+                <PanelCollection>
+                    <dx:PanelContent>
+                        <asp:Table runat="server" Width="100%" HorizontalAlign="Left">
+                            <asp:TableRow>
+                                <asp:TableCell HorizontalAlign="Left" Width="5%">
+                                     <dx:ASPxButton runat="server" Text="" CssClass="menu-button" BackColor="Teal" AutoPostBack="false" CausesValidation="false" UseSubmitBehavior="false" Width="60px" Height="60px">
+                            <FocusRectBorder BorderWidth="0" />
+                            <ClientSideEvents Click="Site.Nav.ToggleNavigationPanel" />
+                            <Image>
+                                <SpriteProperties CssClass="icon menu" />
+                            </Image>
+                        </dx:ASPxButton>
+                                </asp:TableCell>
+                                <asp:TableCell Width="10%" Visible="true" HorizontalAlign="Center" VerticalAlign="Middle">
+                                    <asp:ImageButton runat="server" ImageUrl="~/Images/TechintEC_logo_ESP_White_1280.png" Height="70px" />
+                                </asp:TableCell>
+                                <asp:TableCell Width="45%" HorizontalAlign="Center">
+                                    <dx:ASPxLabel runat="server" Text="Desarrollo Aplicaciones" CssClass="page-header" ForeColor="White" Width="100%"/>
+                                </asp:TableCell>
+                                <asp:TableCell></asp:TableCell>
+                                <asp:TableCell CssClass="">
+                                    <div style="padding-right:10%; padding-left:60%;">
+                                        <dx:ASPxLabel runat="server" Text="Usuario: " Font-Bold="true" ForeColor="White">
+                                        </dx:ASPxLabel>
+                                        <dx:ASPxLabel runat="server" Text="" ID="lblUsuario" Font-Bold="false" ForeColor="White"></dx:ASPxLabel>
+                                    </div>
+                                </asp:TableCell>
+                            </asp:TableRow>
+                        </asp:Table>
+                    </dx:PanelContent>
+                </PanelCollection>
+            </dx:ASPxPanel>
+        </header>
+
+
+        <dx:ASPxPanel runat="server" ID="NavigationPanel" ClientInstanceName="NavigationPanel" FixedPosition="WindowLeft"
+            CssClass="navigation-panel" Collapsible="true" ScrollBars="Auto" Theme="Default">
+            <SettingsCollapsing ExpandEffect="PopupToRight" AnimationType="Slide" ExpandButton-Visible="false" />
+            <Styles>
+                <Panel Paddings-Padding="0" />
+                <ExpandBar Width="0" />
+            </Styles>
+            <PanelCollection>
+                <dx:PanelContent>
+                    <uc:Navigation runat="server" ID="Navigation" />
+                </dx:PanelContent>
+            </PanelCollection>
+        </dx:ASPxPanel>
+
+        <asp:ContentPlaceHolder ID="Content" runat="server">
+        </asp:ContentPlaceHolder>
+    </form>
+</body>
+</html>
