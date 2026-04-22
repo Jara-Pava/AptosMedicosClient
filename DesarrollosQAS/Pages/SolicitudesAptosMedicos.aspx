@@ -88,6 +88,7 @@
                 case 'FECHA_SOLICITUD': mostrarCampo('divFechaSolicitud'); break;
                 case 'RANGO_FECHAS': mostrarCampo('divFechaInicio'); mostrarCampo('divFechaFin'); break;
             }
+            LimpiarBusqueda();
         }
 
         // ── Búsqueda ──────────────────────────────────────────────────────────────
@@ -331,7 +332,7 @@
                 <dx:GridViewDataTextColumn FieldName="Edad" Width="60" Caption="Edad" HeaderStyle-HorizontalAlign="Center" CellStyle-HorizontalAlign="Center" />
                 <dx:GridViewDataTextColumn FieldName="Sexo" Width="60" Caption="Sexo" HeaderStyle-HorizontalAlign="Center" CellStyle-HorizontalAlign="Center" />
             </Columns>
-            <SettingsSearchPanel Visible="true" />
+            <%--<SettingsSearchPanel Visible="true" />--%>
             <SettingsPager PageSize="25" />
             <StylesPager CurrentPageNumber-BackColor="#353943" PageSizeItem-HoverStyle-BackColor="Teal" />
         </dx:ASPxGridView>
