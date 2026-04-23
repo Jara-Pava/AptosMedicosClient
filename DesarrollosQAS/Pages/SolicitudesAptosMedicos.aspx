@@ -62,172 +62,254 @@
             margin-left: 4px;
         }
     </style>
-    <script type="text/javascript">
+        <script type="text/javascript">
 
-        // ── Visibilidad dinámica ───────────────────────────────────────────────────
-        var camposDinamicos = ['divIdSolicitud', 'divIdGlobal', 'divFechaSolicitud', 'divFechaInicio', 'divFechaFin'];
+            // ── Visibilidad dinámica ───────────────────────────────────────────────────
+            var camposDinamicos = ['divIdSolicitud', 'divIdGlobal', 'divFechaSolicitud', 'divFechaInicio', 'divFechaFin'];
 
-        function ocultarTodosLosCampos() {
-            camposDinamicos.forEach(function (id) {
+            function ocultarTodosLosCampos() {
+                camposDinamicos.forEach(function (id) {
+                    var el = document.getElementById(id);
+                    if (el) el.style.display = 'none';
+                });
+            }
+
+            function mostrarCampo(id) {
                 var el = document.getElementById(id);
-                if (el) el.style.display = 'none';
+                if (el) el.style.display = 'flex';
+            }
+
+            function onTipoBusquedaChanged(s, e) {
+                var valor = s.GetValue();
+                var contenedor = document.getElementById('divSearchContent');
+                if (contenedor) {
+                    contenedor.style.display = valor ? 'contents' : 'none';
+                }
+                ocultarTodosLosCampos();
+                switch (valor) {
+                    case 'ID_SOLICITUD': mostrarCampo('divIdSolicitud'); break;
+                    case 'ID_GLOBAL': mostrarCampo('divIdGlobal'); break;
+                    case 'FECHA_SOLICITUD': mostrarCampo('divFechaSolicitud'); break;
+                    case 'RANGO_FECHAS': mostrarCampo('divFechaInicio'); mostrarCampo('divFechaFin'); break;
+                }
+            }
+
+            // ── Almacén de valores crudos tipeados (antes de que DevExpress los borre) ─
+            var _rawFecha = { sol: '', ini: '', fin: '' };
+
+            function iniciarSeguimientoFecha(control, key) {
+                // Esperar a que DevExpress inicialice el input
+                var intentos = 0;
+                var intervalo = setInterval(function () {
+                    var inputEl = control.GetInputElement();
+                    if (inputEl) {
+                        clearInterval(intervalo);
+                        inputEl.addEventListener('input', function () {
+                            _rawFecha[key] = inputEl.value.trim();
+                        });
+                        // También al pegar con el mouse
+                        inputEl.addEventListener('paste', function () {
+                            setTimeout(function () {
+                                _rawFecha[key] = inputEl.value.trim();
+                            }, 50);
+                        });
+                    } else if (++intentos > 20) {
+                        clearInterval(intervalo);
+                    }
+                }, 100);
+            }
+
+            // ── Formatear Date a yyyy-MM-dd sin desplazamiento UTC ────────────────────
+            function formatearFechaLocal(date) {
+                var y = date.getFullYear();
+                var m = date.getMonth() + 1;
+                var d = date.getDate();
+                return y + '-' + (m < 10 ? '0' + m : m) + '-' + (d < 10 ? '0' + d : d);
+            }
+
+            // ── Parsear fecha: primero el control, luego el valor crudo guardado ──────
+            function parsearFecha(control, rawKey) {
+                // 1. Si DevExpress reconoció la fecha correctamente
+                var dateObj = control.GetValue();
+                if (dateObj instanceof Date && !isNaN(dateObj)) {
+                    return formatearFechaLocal(dateObj);
+                }
+
+                // 2. Usar el valor crudo capturado antes de que DevExpress lo borrara
+                var raw = _rawFecha[rawKey] || '';
+                if (!raw) return '';
+
+                var d, m, y;
+
+                // yyyy-MM-dd o yyyy/MM/dd
+                var isoMatch = raw.match(/^(\d{4})[-\/](\d{1,2})[-\/](\d{1,2})$/);
+                if (isoMatch) {
+                    y = parseInt(isoMatch[1], 10);
+                    m = parseInt(isoMatch[2], 10);
+                    d = parseInt(isoMatch[3], 10);
+                }
+
+                // dd/MM/yyyy o dd-MM-yyyy
+                var dmyMatch = raw.match(/^(\d{1,2})[-\/](\d{1,2})[-\/](\d{4})$/);
+                if (!isoMatch && dmyMatch) {
+                    d = parseInt(dmyMatch[1], 10);
+                    m = parseInt(dmyMatch[2], 10);
+                    y = parseInt(dmyMatch[3], 10);
+                }
+
+                if (!d || !m || !y) return raw;
+
+                var fecha = new Date(y, m - 1, d);
+                if (fecha.getFullYear() !== y || fecha.getMonth() !== m - 1 || fecha.getDate() !== d) {
+                    return raw;
+                }
+
+                return formatearFechaLocal(fecha);
+            }
+
+            // ── Búsqueda ──────────────────────────────────────────────────────────────
+            function EjecutarBusqueda() {
+                var tipo = cbTipoBusqueda.GetValue();
+                var valorTexto = '';
+                var fechaSol = '';
+                var fechaInicio = '';
+                var fechaFin = '';
+
+                switch (tipo) {
+                    case 'ID_SOLICITUD':
+                        valorTexto = txtBuscarIdSolicitud.GetValue() || '';
+                        break;
+                    case 'ID_GLOBAL':
+                        valorTexto = txtBuscarIdGlobal.GetValue() || '';
+                        break;
+                    case 'FECHA_SOLICITUD':
+                        fechaSol = parsearFecha(deBuscarFechaSolicitud, 'sol');
+                        break;
+                    case 'RANGO_FECHAS':
+                        fechaInicio = parsearFecha(deBuscarFechaInicio, 'ini');
+                        fechaFin = parsearFecha(deBuscarFechaFin, 'fin');
+                        break;
+                }
+
+                gridSolicitudesAptosMedicos.PerformCallback(
+                    'SEARCH|' + tipo + '|' + valorTexto + '|' + fechaSol + '|' + fechaInicio + '|' + fechaFin
+                );
+            }
+
+            function LimpiarBusqueda() {
+                txtBuscarIdSolicitud.SetValue('');
+                txtBuscarIdGlobal.SetValue('');
+                deBuscarFechaSolicitud.SetValue(null);
+                deBuscarFechaInicio.SetValue(null);
+                deBuscarFechaFin.SetValue(null);
+                _rawFecha.sol = '';
+                _rawFecha.ini = '';
+                _rawFecha.fin = '';
+            }
+
+            // ── Estado inicial ────────────────────────────────────────────────────────
+            window.addEventListener('load', function () {
+                var contenedor = document.getElementById('divSearchContent');
+                if (contenedor) contenedor.style.display = 'none';
+                ocultarTodosLosCampos();
+
+                // Iniciar seguimiento de valores crudos en los campos de fecha
+                iniciarSeguimientoFecha(deBuscarFechaSolicitud, 'sol');
+                iniciarSeguimientoFecha(deBuscarFechaInicio, 'ini');
+                iniciarSeguimientoFecha(deBuscarFechaFin, 'fin');
             });
-        }
 
-        function mostrarCampo(id) {
-            var el = document.getElementById(id);
-            if (el) el.style.display = 'flex';
-        }
-
-        function onTipoBusquedaChanged(s, e) {
-            var valor = s.GetValue();
-
-            // Mostrar u ocultar el contenedor de campos + botones
-            var contenedor = document.getElementById('divSearchContent');
-            if (contenedor) {
-                contenedor.style.display = valor ? 'contents' : 'none';
-            }
-
-            ocultarTodosLosCampos();
-
-            switch (valor) {
-                case 'ID_SOLICITUD': mostrarCampo('divIdSolicitud'); break;
-                case 'ID_GLOBAL': mostrarCampo('divIdGlobal'); break;
-                case 'FECHA_SOLICITUD': mostrarCampo('divFechaSolicitud'); break;
-                case 'RANGO_FECHAS': mostrarCampo('divFechaInicio'); mostrarCampo('divFechaFin'); break;
-            }
-        }
-
-        // ── Conversión de fecha a yyyy-MM-dd ──────────────────────────────────────
-        function parsearFecha(control) {
-            var dateObj = control.GetValue();
-            if (dateObj instanceof Date && !isNaN(dateObj)) {
-                return dateObj.toLocaleDateString('en-CA');
-            }
-
-            var inputEl = control.GetInputElement();
-            var raw = inputEl ? inputEl.value.trim() : '';
-            if (!raw) return '';
-
-            var d, m, y;
-
-            var isoMatch = raw.match(/^(\d{4})[-\/](\d{1,2})[-\/](\d{1,2})$/);
-            if (isoMatch) {
-                y = parseInt(isoMatch[1], 10);
-                m = parseInt(isoMatch[2], 10);
-                d = parseInt(isoMatch[3], 10);
-            }
-
-            var dmyMatch = raw.match(/^(\d{1,2})[-\/](\d{1,2})[-\/](\d{4})$/);
-            if (!isoMatch && dmyMatch) {
-                d = parseInt(dmyMatch[1], 10);
-                m = parseInt(dmyMatch[2], 10);
-                y = parseInt(dmyMatch[3], 10);
-            }
-
-            if (!d || !m || !y) return '';
-
-            var fecha = new Date(y, m - 1, d);
-            if (fecha.getFullYear() !== y || fecha.getMonth() !== m - 1 || fecha.getDate() !== d) {
-                return '';
-            }
-
-            return y + '-'
-                + (m < 10 ? '0' + m : m) + '-'
-                + (d < 10 ? '0' + d : d);
-        }
-
-        // ── Búsqueda ──────────────────────────────────────────────────────────────
-        function EjecutarBusqueda() {
-            var tipo = cbTipoBusqueda.GetValue();
-            var valorTexto = '';
-            var fechaSol = '';
-            var fechaInicio = '';
-            var fechaFin = '';
-
-            switch (tipo) {
-                case 'ID_SOLICITUD':
-                    valorTexto = txtBuscarIdSolicitud.GetValue() || '';
-                    break;
-                case 'ID_GLOBAL':
-                    valorTexto = txtBuscarIdGlobal.GetValue() || '';
-                    break;
-                case 'FECHA_SOLICITUD':
-                    fechaSol = parsearFecha(deBuscarFechaSolicitud);
-                    break;
-                case 'RANGO_FECHAS':
-                    fechaInicio = parsearFecha(deBuscarFechaInicio);
-                    fechaFin = parsearFecha(deBuscarFechaFin);
-                    break;
-            }
-
-            gridSolicitudesAptosMedicos.PerformCallback(
-                'SEARCH|' + tipo + '|' + valorTexto + '|' + fechaSol + '|' + fechaInicio + '|' + fechaFin
-            );
-        }
-
-        function LimpiarBusqueda() {
-            // Limpiar campos
-            txtBuscarIdSolicitud.SetValue('');
-            txtBuscarIdGlobal.SetValue('');
-            deBuscarFechaSolicitud.SetValue(null);
-            deBuscarFechaInicio.SetValue(null);
-            deBuscarFechaFin.SetValue(null);
-        }
-
-        // ── Estado inicial: ocultar todo excepto el combo ─────────────────────────
-        window.addEventListener('load', function () {
-            var contenedor = document.getElementById('divSearchContent');
-            if (contenedor) contenedor.style.display = 'none';
-            ocultarTodosLosCampos();
-        });
-
-        // ── Callbacks del grid ────────────────────────────────────────────────────
-        function OnGridSolicitudesEndCallback(s, e) {
-            if (s.cpMessageType && s.cpMessage) {
-                if (s.cpMessageType === 'success') {
-                    lblMensajeExito.SetText(s.cpMessage);
-                    pcMensajeExito.Show();
-                } else if (s.cpMessageType === 'error') {
-                    lblMensajeError.SetText(s.cpMessage);
-                    pcMensajeError.Show();
+            // ── Callbacks del grid ────────────────────────────────────────────────────
+            function OnGridSolicitudesEndCallback(s, e) {
+                if (s.cpMessageType && s.cpMessage) {
+                    if (s.cpMessageType === 'success') {
+                        lblMensajeExito.SetText(s.cpMessage);
+                        pcMensajeExito.Show();
+                    } else if (s.cpMessageType === 'error') {
+                        lblMensajeError.SetText(s.cpMessage);
+                        pcMensajeError.Show();
+                    }
+                    delete s.cpMessageType;
+                    delete s.cpMessage;
                 }
-                delete s.cpMessageType;
-                delete s.cpMessage;
             }
-        }
 
-        function OnCustomButtonClickSolicitud(s, e) {
-            if (e.buttonID === 'btnEditSolicitud') {
-                e.processOnServer = false;
-                var id = s.GetRowKey(e.visibleIndex);
-                if (id) {
-                    window.location.href = 'SolicitudEspecial.aspx?id=' + id;
-                } else {
-                    alert('No se pudo obtener el ID de la solicitud');
+            function OnCustomButtonClickSolicitud(s, e) {
+                if (e.buttonID === 'btnEditSolicitud') {
+                    e.processOnServer = false;
+                    var id = s.GetRowKey(e.visibleIndex);
+                    if (id) {
+                        window.location.href = 'SolicitudEspecial.aspx?id=' + id;
+                    } else {
+                        alert('No se pudo obtener el ID de la solicitud');
+                    }
+                    return;
                 }
-                return;
+                if (e.buttonID === 'btnDeleteSolicitud') {
+                    e.processOnServer = false;
+                    currentDeleteIndex = e.visibleIndex;
+                    pcConfirmarEliminacion.Show();
+                }
             }
-            if (e.buttonID === 'btnDeleteSolicitud') {
-                e.processOnServer = false;
-                currentDeleteIndex = e.visibleIndex;
-                pcConfirmarEliminacion.Show();
+
+            var currentDeleteIndex = -1;
+
+            function ConfirmarEliminacion() {
+                if (currentDeleteIndex >= 0) {
+                    gridSolicitudesAptosMedicos.PerformCallback('DELETE|' + currentDeleteIndex);
+                    pcConfirmarEliminacion.Hide();
+                }
             }
-        }
 
-        var currentDeleteIndex = -1;
-
-        function ConfirmarEliminacion() {
-            if (currentDeleteIndex >= 0) {
-                gridSolicitudesAptosMedicos.PerformCallback('DELETE|' + currentDeleteIndex);
+            function CancelarEliminacion() {
+                currentDeleteIndex = -1;
                 pcConfirmarEliminacion.Hide();
             }
-        }
+            // ── Enter en campos de búsqueda: ejecutar búsqueda y cancelar postback ────
+            function onBusquedaKeyDown(s, e) {
+                var keyCode = e.htmlEvent.keyCode || e.htmlEvent.which;
+                if (keyCode === 13) {
+                    e.htmlEvent.preventDefault();
+                    e.htmlEvent.stopPropagation();
+                    EjecutarBusqueda();
+                }
+            }
 
-        function CancelarEliminacion() {
-            currentDeleteIndex = -1;
-            pcConfirmarEliminacion.Hide();
-        }
+            // ── Al salir del campo: restaurar la fecha si DevExpress la borró ─────────
+            function onFechaLostFocus(control, rawKey) {
+                // Si DevExpress ya reconoció la fecha, no hacer nada
+                var dateObj = control.GetValue();
+                if (dateObj instanceof Date && !isNaN(dateObj)) return;
+
+                var raw = _rawFecha[rawKey] || '';
+                if (!raw) return;
+
+                var d, m, y;
+
+                // yyyy-MM-dd o yyyy/MM/dd
+                var isoMatch = raw.match(/^(\d{4})[-\/](\d{1,2})[-\/](\d{1,2})$/);
+                if (isoMatch) {
+                    y = parseInt(isoMatch[1], 10);
+                    m = parseInt(isoMatch[2], 10);
+                    d = parseInt(isoMatch[3], 10);
+                }
+
+                // dd/MM/yyyy o dd-MM-yyyy
+                var dmyMatch = raw.match(/^(\d{1,2})[-\/](\d{1,2})[-\/](\d{4})$/);
+                if (!isoMatch && dmyMatch) {
+                    d = parseInt(dmyMatch[1], 10);
+                    m = parseInt(dmyMatch[2], 10);
+                    y = parseInt(dmyMatch[3], 10);
+                }
+
+                if (!d || !m || !y) return;
+
+                var fecha = new Date(y, m - 1, d);
+                if (fecha.getFullYear() !== y || fecha.getMonth() !== m - 1 || fecha.getDate() !== d) return;
+
+                // Restaurar la fecha al control → DevExpress la muestra con DisplayFormatString (dd/MM/yyyy)
+                control.SetValue(fecha);
+            }
     </script>
 
     <uc:PopupMessages ID="popupMessages" runat="server" />
@@ -284,18 +366,22 @@
         <!-- Campos dinámicos + botones: ocultos hasta seleccionar tipo -->
         <div id="divSearchContent" style="display: none; contents: none;">
 
-            <!-- Campo dinámico: ID Solicitud -->
+                        <!-- Campo dinámico: ID Solicitud -->
             <div id="divIdSolicitud" class="search-field" style="display: none;">
                 <span class="search-field-label">ID Solicitud</span>
                 <dx:ASPxTextBox ID="txtBuscarIdSolicitud" runat="server"
-                    ClientInstanceName="txtBuscarIdSolicitud" Width="160px" NullText="ID Solicitud..." />
+                    ClientInstanceName="txtBuscarIdSolicitud" Width="160px" NullText="ID Solicitud...">
+                    <ClientSideEvents KeyDown="onBusquedaKeyDown" />
+                </dx:ASPxTextBox>
             </div>
 
             <!-- Campo dinámico: ID Global -->
             <div id="divIdGlobal" class="search-field" style="display: none;">
                 <span class="search-field-label">ID Global</span>
                 <dx:ASPxTextBox ID="txtBuscarIdGlobal" runat="server"
-                    ClientInstanceName="txtBuscarIdGlobal" Width="200px" NullText="ID Global..." />
+                    ClientInstanceName="txtBuscarIdGlobal" Width="200px" NullText="ID Global...">
+                    <ClientSideEvents KeyDown="onBusquedaKeyDown" />
+                </dx:ASPxTextBox>
             </div>
 
             <!-- Campo dinámico: Fecha Solicitud -->
@@ -303,7 +389,11 @@
                 <span class="search-field-label">Fecha Solicitud</span>
                 <dx:ASPxDateEdit ID="deBuscarFechaSolicitud" runat="server"
                     ClientInstanceName="deBuscarFechaSolicitud" Width="150px"
-                    DisplayFormatString="dd/MM/yyyy" EditFormatString="dd/MM/yyyy" NullText="Fecha Solicitud ..." />
+                    DisplayFormatString="dd/MM/yyyy" EditFormatString="dd/MM/yyyy"
+                    NullText="dd/MM/yyyy o yyyy-MM-dd">
+                    <ClientSideEvents KeyDown="onBusquedaKeyDown"
+                                      LostFocus="function(s,e){ onFechaLostFocus(s, 'sol'); }" />
+                </dx:ASPxDateEdit>
             </div>
 
             <!-- Campos dinámicos: Rango de fechas -->
@@ -311,14 +401,22 @@
                 <span class="search-field-label">Fecha Inicio</span>
                 <dx:ASPxDateEdit ID="deBuscarFechaInicio" runat="server"
                     ClientInstanceName="deBuscarFechaInicio" Width="150px"
-                    DisplayFormatString="dd/MM/yyyy" EditFormatString="dd/MM/yyyy" NullText="Fecha Inicio" />
+                    DisplayFormatString="dd/MM/yyyy" EditFormatString="dd/MM/yyyy"
+                    NullText="dd/MM/yyyy o yyyy-MM-dd">
+                    <ClientSideEvents KeyDown="onBusquedaKeyDown"
+                                      LostFocus="function(s,e){ onFechaLostFocus(s, 'ini'); }" />
+                </dx:ASPxDateEdit>
             </div>
 
             <div id="divFechaFin" class="search-field" style="display: none;">
                 <span class="search-field-label">Fecha Fin</span>
                 <dx:ASPxDateEdit ID="deBuscarFechaFin" runat="server"
                     ClientInstanceName="deBuscarFechaFin" Width="150px"
-                    DisplayFormatString="dd/MM/yyyy" EditFormatString="dd/MM/yyyy" NullText="Fecha Fin" />
+                    DisplayFormatString="dd/MM/yyyy" EditFormatString="dd/MM/yyyy"
+                    NullText="dd/MM/yyyy o yyyy-MM-dd">
+                    <ClientSideEvents KeyDown="onBusquedaKeyDown"
+                                      LostFocus="function(s,e){ onFechaLostFocus(s, 'fin'); }" />
+                </dx:ASPxDateEdit>
             </div>
 
             <!-- Botones -->
