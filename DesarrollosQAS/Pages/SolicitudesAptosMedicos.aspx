@@ -28,7 +28,6 @@
                 min-width: max-content;
             }
 
-        /* Panel de búsqueda en una sola fila */
         .search-panel {
             display: flex;
             flex-direction: row;
@@ -81,8 +80,17 @@
         }
 
         function onTipoBusquedaChanged(s, e) {
+            var valor = s.GetValue();
+
+            // Mostrar u ocultar el contenedor de campos + botones
+            var contenedor = document.getElementById('divSearchContent');
+            if (contenedor) {
+                contenedor.style.display = valor ? 'contents' : 'none';
+            }
+
             ocultarTodosLosCampos();
-            switch (s.GetValue()) {
+
+            switch (valor) {
                 case 'ID_SOLICITUD': mostrarCampo('divIdSolicitud'); break;
                 case 'ID_GLOBAL': mostrarCampo('divIdGlobal'); break;
                 case 'FECHA_SOLICITUD': mostrarCampo('divFechaSolicitud'); break;
@@ -91,22 +99,18 @@
         }
 
         // ── Conversión de fecha a yyyy-MM-dd ──────────────────────────────────────
-        // Soporta: yyyy-MM-dd | dd/MM/yyyy | dd-MM-yyyy | MM/dd/yyyy
         function parsearFecha(control) {
-            // 1. Intentar con el valor del control (devuelve Date si el formato coincide)
             var dateObj = control.GetValue();
             if (dateObj instanceof Date && !isNaN(dateObj)) {
-                return dateObj.toLocaleDateString('en-CA'); // yyyy-MM-dd
+                return dateObj.toLocaleDateString('en-CA');
             }
 
-            // 2. Leer el texto crudo del input
             var inputEl = control.GetInputElement();
             var raw = inputEl ? inputEl.value.trim() : '';
             if (!raw) return '';
 
             var d, m, y;
 
-            // yyyy-MM-dd o yyyy/MM/dd
             var isoMatch = raw.match(/^(\d{4})[-\/](\d{1,2})[-\/](\d{1,2})$/);
             if (isoMatch) {
                 y = parseInt(isoMatch[1], 10);
@@ -114,7 +118,6 @@
                 d = parseInt(isoMatch[3], 10);
             }
 
-            // dd/MM/yyyy o dd-MM-yyyy
             var dmyMatch = raw.match(/^(\d{1,2})[-\/](\d{1,2})[-\/](\d{4})$/);
             if (!isoMatch && dmyMatch) {
                 d = parseInt(dmyMatch[1], 10);
@@ -124,13 +127,11 @@
 
             if (!d || !m || !y) return '';
 
-            // Validar que sea una fecha real
             var fecha = new Date(y, m - 1, d);
             if (fecha.getFullYear() !== y || fecha.getMonth() !== m - 1 || fecha.getDate() !== d) {
                 return '';
             }
 
-            // Formatear como yyyy-MM-dd
             return y + '-'
                 + (m < 10 ? '0' + m : m) + '-'
                 + (d < 10 ? '0' + d : d);
@@ -166,13 +167,19 @@
         }
 
         function LimpiarBusqueda() {
-            gridSolicitudesAptosMedicos.PerformCallback('SEARCH|NONE||||');
+            // Limpiar campos
+            txtBuscarIdSolicitud.SetValue('');
+            txtBuscarIdGlobal.SetValue('');
+            deBuscarFechaSolicitud.SetValue(null);
+            deBuscarFechaInicio.SetValue(null);
+            deBuscarFechaFin.SetValue(null);
         }
 
-        // ── Estado inicial ────────────────────────────────────────────────────────
+        // ── Estado inicial: ocultar todo excepto el combo ─────────────────────────
         window.addEventListener('load', function () {
+            var contenedor = document.getElementById('divSearchContent');
+            if (contenedor) contenedor.style.display = 'none';
             ocultarTodosLosCampos();
-            mostrarCampo('divIdSolicitud');
         });
 
         // ── Callbacks del grid ────────────────────────────────────────────────────
@@ -256,14 +263,15 @@
     </div>
     <br />
 
-    <!-- ── Panel de búsqueda en una sola fila ────────────────────────────────── -->
+    <!-- ── Panel de búsqueda ─────────────────────────────────────────────────── -->
     <div class="search-panel">
 
-        <!-- Tipo de búsqueda: siempre visible -->
+        <!-- Tipo de búsqueda: SIEMPRE visible -->
         <div class="search-field">
             <span class="search-field-label">Tipo Búsqueda</span>
             <dx:ASPxComboBox ID="cbTipoBusqueda" runat="server" ClientInstanceName="cbTipoBusqueda" Width="160px">
                 <Items>
+                    <dx:ListEditItem Text="Seleccione..."   Value="" />
                     <dx:ListEditItem Text="ID Solicitud"    Value="ID_SOLICITUD" />
                     <dx:ListEditItem Text="ID Global"       Value="ID_GLOBAL" />
                     <dx:ListEditItem Text="Fecha Solicitud" Value="FECHA_SOLICITUD" />
@@ -273,54 +281,60 @@
             </dx:ASPxComboBox>
         </div>
 
-        <!-- Campo dinámico: ID Solicitud -->
-        <div id="divIdSolicitud" class="search-field">
-            <span class="search-field-label">ID Solicitud</span>
-            <dx:ASPxTextBox ID="txtBuscarIdSolicitud" runat="server"
-                ClientInstanceName="txtBuscarIdSolicitud" Width="160px" NullText="ID Solicitud..." />
-        </div>
+        <!-- Campos dinámicos + botones: ocultos hasta seleccionar tipo -->
+        <div id="divSearchContent" style="display: none; contents: none;">
 
-        <!-- Campo dinámico: ID Global -->
-        <div id="divIdGlobal" class="search-field">
-            <span class="search-field-label">ID Global</span>
-            <dx:ASPxTextBox ID="txtBuscarIdGlobal" runat="server"
-                ClientInstanceName="txtBuscarIdGlobal" Width="200px" NullText="ID Global..." />
-        </div>
+            <!-- Campo dinámico: ID Solicitud -->
+            <div id="divIdSolicitud" class="search-field" style="display: none;">
+                <span class="search-field-label">ID Solicitud</span>
+                <dx:ASPxTextBox ID="txtBuscarIdSolicitud" runat="server"
+                    ClientInstanceName="txtBuscarIdSolicitud" Width="160px" NullText="ID Solicitud..." />
+            </div>
 
-        <!-- Campo dinámico: Fecha Solicitud -->
-        <div id="divFechaSolicitud" class="search-field">
-            <span class="search-field-label">Fecha Solicitud</span>
-            <dx:ASPxDateEdit ID="deBuscarFechaSolicitud" runat="server"
-                ClientInstanceName="deBuscarFechaSolicitud" Width="150px"
-                DisplayFormatString="dd/MM/yyyy" EditFormatString="dd/MM/yyyy" NullText="Fecha Solicitud ..." />
-        </div>
+            <!-- Campo dinámico: ID Global -->
+            <div id="divIdGlobal" class="search-field" style="display: none;">
+                <span class="search-field-label">ID Global</span>
+                <dx:ASPxTextBox ID="txtBuscarIdGlobal" runat="server"
+                    ClientInstanceName="txtBuscarIdGlobal" Width="200px" NullText="ID Global..." />
+            </div>
 
-        <!-- Campos dinámicos: Rango de fechas -->
-        <div id="divFechaInicio" class="search-field">
-            <span class="search-field-label">Fecha Inicio</span>
-            <dx:ASPxDateEdit ID="deBuscarFechaInicio" runat="server"
-                ClientInstanceName="deBuscarFechaInicio" Width="150px"
-                DisplayFormatString="dd/MM/yyyy" EditFormatString="dd/MM/yyyy" NullText="Fecha Inicio"/>
-        </div>
+            <!-- Campo dinámico: Fecha Solicitud -->
+            <div id="divFechaSolicitud" class="search-field" style="display: none;">
+                <span class="search-field-label">Fecha Solicitud</span>
+                <dx:ASPxDateEdit ID="deBuscarFechaSolicitud" runat="server"
+                    ClientInstanceName="deBuscarFechaSolicitud" Width="150px"
+                    DisplayFormatString="dd/MM/yyyy" EditFormatString="dd/MM/yyyy" NullText="Fecha Solicitud ..." />
+            </div>
 
-        <div id="divFechaFin" class="search-field">
-            <span class="search-field-label">Fecha Fin</span>
-            <dx:ASPxDateEdit ID="deBuscarFechaFin" runat="server"
-                ClientInstanceName="deBuscarFechaFin" Width="150px"
-                DisplayFormatString="dd/MM/yyyy" EditFormatString="dd/MM/yyyy" NullText="Fecha Fin"/>
-        </div>
+            <!-- Campos dinámicos: Rango de fechas -->
+            <div id="divFechaInicio" class="search-field" style="display: none;">
+                <span class="search-field-label">Fecha Inicio</span>
+                <dx:ASPxDateEdit ID="deBuscarFechaInicio" runat="server"
+                    ClientInstanceName="deBuscarFechaInicio" Width="150px"
+                    DisplayFormatString="dd/MM/yyyy" EditFormatString="dd/MM/yyyy" NullText="Fecha Inicio" />
+            </div>
 
-        <!-- Botones: siempre visibles -->
-        <div class="search-buttons">
-            <dx:ASPxButton runat="server" ID="btnBuscar" Text="Buscar" AutoPostBack="false" Width="90px"
-                BackColor="#353943" ForeColor="White" Font-Bold="true">
-                <ClientSideEvents Click="EjecutarBusqueda" />
-            </dx:ASPxButton>
-            <dx:ASPxButton runat="server" ID="btnLimpiar" Text="Limpiar" AutoPostBack="false" Width="90px"
-                BackColor="Teal" ForeColor="White" Font-Bold="true">
-                <ClientSideEvents Click="LimpiarBusqueda" />
-            </dx:ASPxButton>
+            <div id="divFechaFin" class="search-field" style="display: none;">
+                <span class="search-field-label">Fecha Fin</span>
+                <dx:ASPxDateEdit ID="deBuscarFechaFin" runat="server"
+                    ClientInstanceName="deBuscarFechaFin" Width="150px"
+                    DisplayFormatString="dd/MM/yyyy" EditFormatString="dd/MM/yyyy" NullText="Fecha Fin" />
+            </div>
+
+            <!-- Botones -->
+            <div class="search-buttons">
+                <dx:ASPxButton runat="server" ID="btnBuscar" Text="Buscar" AutoPostBack="false" Width="90px"
+                    BackColor="#353943" ForeColor="White" Font-Bold="true">
+                    <ClientSideEvents Click="EjecutarBusqueda" />
+                </dx:ASPxButton>
+                <dx:ASPxButton runat="server" ID="btnLimpiar" Text="Limpiar" AutoPostBack="false" Width="90px"
+                    BackColor="Teal" ForeColor="White" Font-Bold="true">
+                    <ClientSideEvents Click="LimpiarBusqueda" />
+                </dx:ASPxButton>
+            </div>
+
         </div>
+        <!-- fin divSearchContent -->
 
     </div>
 
@@ -374,7 +388,6 @@
                 <dx:GridViewDataTextColumn FieldName="Edad" Width="60" Caption="Edad" HeaderStyle-HorizontalAlign="Center" CellStyle-HorizontalAlign="Center" />
                 <dx:GridViewDataTextColumn FieldName="Sexo" Width="60" Caption="Sexo" HeaderStyle-HorizontalAlign="Center" CellStyle-HorizontalAlign="Center" />
             </Columns>
-            <%--<SettingsSearchPanel Visible="true" />--%>
             <SettingsPager PageSize="25" />
             <StylesPager CurrentPageNumber-BackColor="#353943" PageSizeItem-HoverStyle-BackColor="Teal" />
         </dx:ASPxGridView>
