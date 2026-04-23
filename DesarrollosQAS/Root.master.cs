@@ -1,5 +1,4 @@
-﻿using DesarrollosQAS.Model;
-using DevExpress.Web;
+﻿using DevExpress.Web;
 using System;
 using System.Globalization;
 using System.Threading;
@@ -18,30 +17,8 @@ namespace DesarrollosQAS
             Thread.CurrentThread.CurrentCulture = new CultureInfo(language);
             Thread.CurrentThread.CurrentUICulture = new CultureInfo(language);
 
-            // Autenticar al usuario de Windows automáticamente (solo una vez por sesión)
-            if (!AuthHelper.IsAuthenticated())
-            {
-                string windowsUser = Environment.UserName;
-
-                if (!AuthHelper.SignIn(windowsUser, null))
-                {
-                    // El usuario de Windows no existe en SEC_Usuarios, redirigir
-                    Response.Redirect("Pages/SinAcceso.aspx", false);
-                    Context.ApplicationInstance.CompleteRequest();
-                    return;
-                }
-            }
-
-            // Mostrar el nombre del usuario autenticado
-            var user = AuthHelper.GetLoggedInUserInfo();
-            if (user != null)
-            {
-                lblUsuario.Text = user.Sigla_red;
-            }
-            else
-            {
-                lblUsuario.Text = Environment.UserName;
-            }
+            // Mostrar el usuario de Windows directamente, sin autenticación
+            lblUsuario.Text = Environment.UserName;
 
             int collapseAtWindowInnerWidth = 1200;
             NavigationPanel.SettingsAdaptivity.CollapseAtWindowInnerWidth = collapseAtWindowInnerWidth;

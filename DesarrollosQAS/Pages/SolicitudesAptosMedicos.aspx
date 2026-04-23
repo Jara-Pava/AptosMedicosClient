@@ -88,7 +88,52 @@
                 case 'FECHA_SOLICITUD': mostrarCampo('divFechaSolicitud'); break;
                 case 'RANGO_FECHAS': mostrarCampo('divFechaInicio'); mostrarCampo('divFechaFin'); break;
             }
-            LimpiarBusqueda();
+        }
+
+        // ── Conversión de fecha a yyyy-MM-dd ──────────────────────────────────────
+        // Soporta: yyyy-MM-dd | dd/MM/yyyy | dd-MM-yyyy | MM/dd/yyyy
+        function parsearFecha(control) {
+            // 1. Intentar con el valor del control (devuelve Date si el formato coincide)
+            var dateObj = control.GetValue();
+            if (dateObj instanceof Date && !isNaN(dateObj)) {
+                return dateObj.toLocaleDateString('en-CA'); // yyyy-MM-dd
+            }
+
+            // 2. Leer el texto crudo del input
+            var inputEl = control.GetInputElement();
+            var raw = inputEl ? inputEl.value.trim() : '';
+            if (!raw) return '';
+
+            var d, m, y;
+
+            // yyyy-MM-dd o yyyy/MM/dd
+            var isoMatch = raw.match(/^(\d{4})[-\/](\d{1,2})[-\/](\d{1,2})$/);
+            if (isoMatch) {
+                y = parseInt(isoMatch[1], 10);
+                m = parseInt(isoMatch[2], 10);
+                d = parseInt(isoMatch[3], 10);
+            }
+
+            // dd/MM/yyyy o dd-MM-yyyy
+            var dmyMatch = raw.match(/^(\d{1,2})[-\/](\d{1,2})[-\/](\d{4})$/);
+            if (!isoMatch && dmyMatch) {
+                d = parseInt(dmyMatch[1], 10);
+                m = parseInt(dmyMatch[2], 10);
+                y = parseInt(dmyMatch[3], 10);
+            }
+
+            if (!d || !m || !y) return '';
+
+            // Validar que sea una fecha real
+            var fecha = new Date(y, m - 1, d);
+            if (fecha.getFullYear() !== y || fecha.getMonth() !== m - 1 || fecha.getDate() !== d) {
+                return '';
+            }
+
+            // Formatear como yyyy-MM-dd
+            return y + '-'
+                + (m < 10 ? '0' + m : m) + '-'
+                + (d < 10 ? '0' + d : d);
         }
 
         // ── Búsqueda ──────────────────────────────────────────────────────────────
@@ -107,14 +152,11 @@
                     valorTexto = txtBuscarIdGlobal.GetValue() || '';
                     break;
                 case 'FECHA_SOLICITUD':
-                    var fs = deBuscarFechaSolicitud.GetValue();
-                    fechaSol = fs ? fs.toLocaleDateString('en-CA') : '';
+                    fechaSol = parsearFecha(deBuscarFechaSolicitud);
                     break;
                 case 'RANGO_FECHAS':
-                    var fi = deBuscarFechaInicio.GetValue();
-                    var ff = deBuscarFechaFin.GetValue();
-                    fechaInicio = fi ? fi.toLocaleDateString('en-CA') : '';
-                    fechaFin = ff ? ff.toLocaleDateString('en-CA') : '';
+                    fechaInicio = parsearFecha(deBuscarFechaInicio);
+                    fechaFin = parsearFecha(deBuscarFechaFin);
                     break;
             }
 
@@ -235,7 +277,7 @@
         <div id="divIdSolicitud" class="search-field">
             <span class="search-field-label">ID Solicitud</span>
             <dx:ASPxTextBox ID="txtBuscarIdSolicitud" runat="server"
-                ClientInstanceName="txtBuscarIdSolicitud" Width="160px" NullText="Folio..." />
+                ClientInstanceName="txtBuscarIdSolicitud" Width="160px" NullText="ID Solicitud..." />
         </div>
 
         <!-- Campo dinámico: ID Global -->
@@ -250,7 +292,7 @@
             <span class="search-field-label">Fecha Solicitud</span>
             <dx:ASPxDateEdit ID="deBuscarFechaSolicitud" runat="server"
                 ClientInstanceName="deBuscarFechaSolicitud" Width="150px"
-                DisplayFormatString="dd/MM/yyyy" EditFormatString="dd/MM/yyyy" />
+                DisplayFormatString="dd/MM/yyyy" EditFormatString="dd/MM/yyyy" NullText="Fecha Solicitud ..." />
         </div>
 
         <!-- Campos dinámicos: Rango de fechas -->
@@ -258,14 +300,14 @@
             <span class="search-field-label">Fecha Inicio</span>
             <dx:ASPxDateEdit ID="deBuscarFechaInicio" runat="server"
                 ClientInstanceName="deBuscarFechaInicio" Width="150px"
-                DisplayFormatString="dd/MM/yyyy" EditFormatString="dd/MM/yyyy" />
+                DisplayFormatString="dd/MM/yyyy" EditFormatString="dd/MM/yyyy" NullText="Fecha Inicio"/>
         </div>
 
         <div id="divFechaFin" class="search-field">
             <span class="search-field-label">Fecha Fin</span>
             <dx:ASPxDateEdit ID="deBuscarFechaFin" runat="server"
                 ClientInstanceName="deBuscarFechaFin" Width="150px"
-                DisplayFormatString="dd/MM/yyyy" EditFormatString="dd/MM/yyyy" />
+                DisplayFormatString="dd/MM/yyyy" EditFormatString="dd/MM/yyyy" NullText="Fecha Fin"/>
         </div>
 
         <!-- Botones: siempre visibles -->

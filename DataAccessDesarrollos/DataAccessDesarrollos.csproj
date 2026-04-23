@@ -47,6 +47,7 @@
   <ItemGroup>
     <Compile Include="AptosMedicosApiResponse.cs" />
     <Compile Include="DataAccess.cs" />
+    <Compile Include="ErrorResponseAptosMedicos.cs" />
     <Compile Include="Interfaces\IModuloCatalago.cs" />
     <Compile Include="Interfaces\IRoles.cs" />
     <Compile Include="Interfaces\ISolicitudesAptosMedicos.cs" />
