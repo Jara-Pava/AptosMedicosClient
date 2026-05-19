@@ -8,10 +8,10 @@ namespace DataAccessDesarrollos.Interfaces
 {
     public interface ISolicitudesAptosMedicos
     {
-        List<SolicitudAptoMedico> ObtenerTodasSolicitudesAptosMedicos();
-        SolicitudAptoMedico ObtenerSolicitudAptoMedicoPorId(int id);
-        List<SolicitudAptoMedico> ObtenerSolicitudesAptosMedicosPorIdGlobal(string idGlobal);
-        List<SolicitudAptoMedico> ObtenerSolicitudesAptosMedicosPorFechaSolicitud(DateTime fechaSolicitud);
-        List<SolicitudAptoMedico> ObtenerSolicitudesAptosMedicosPorFechas(DateTime fechaInicio, DateTime fechaFin);
+        ResultadoConsulta ConsultarPorId(string id);
+        ResultadoConsulta ConsultarPorIdGlobal(string idGlobal);
+        ResultadoConsulta ConsultarPorFechaSolicitud(string fecha);
+        ResultadoConsulta ConsultarPorFechas(string fecha_inicio, string fecha_fin);
+
     }
 }

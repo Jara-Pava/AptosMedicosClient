@@ -1,9 +1,11 @@
 ﻿using DataAccessDesarrollos;
 using DataAccessDesarrollos.Repositorios;
 using DevExpress.Web;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Web.UI;
+using System.Xml;
 
 namespace DesarrollosQAS.Pages
 {
@@ -26,40 +28,28 @@ namespace DesarrollosQAS.Pages
             if (!IsPostBack)
             {
                 Session.Remove(SessionKeyBusqueda);
-                // DataBind() → dispara DataBinding → carga todos los registros
                 gridSolicitudesAptosMedicos.DataBind();
             }
         }
 
-        // ── ÚNICO lugar donde se asigna DataSource ────────────────────────────────
-        // Se dispara en: paginación, ordenamiento, DataBind() explícito, etc.
         protected void gridSolicitudesAptosMedicos_DataBinding(object sender, EventArgs e)
         {
+            // Si hay parámetros de búsqueda en sesión, los usamos para mostrar resultados al recargar la página
             var p = Session[SessionKeyBusqueda] as BusquedaParams
                     ?? new BusquedaParams { Tipo = "NONE" };
 
             var repo = new SolicitudesAptosMedicosRepository();
             List<SolicitudAptoMedico> resultado;
 
-            try
+            try     
             {
                 switch (p.Tipo)
                 {
-                    case "ID_SOLICITUD":
-                        resultado = repo.ObtenerSolicitudAptoMedicoPorIdStr(p.ValorTexto);
-                        break;
-                    case "ID_GLOBAL":
-                        resultado = repo.ObtenerSolicitudesAptosMedicosPorIdGlobal(p.ValorTexto);
-                        break;
-                    case "FECHA_SOLICITUD":
-                        resultado = repo.ObtenerSolicitudesAptosMedicosPorFechaSolicitudStr(p.FechaSol);
-                        break;
-                    case "RANGO_FECHAS":
-                        resultado = repo.ObtenerSolicitudesAptosMedicosPorFechasStr(p.FechaIni, p.FechaFin);
-                        break;
-                    default:
-                        resultado = new List<SolicitudAptoMedico>();
-                        break;
+                    case "ID_SOLICITUD": resultado = repo.ConsultarPorId(p.ValorTexto).Solicitudes; break;
+                    case "ID_GLOBAL": resultado = repo.ConsultarPorIdGlobal(p.ValorTexto).Solicitudes; break;
+                    case "FECHA_SOLICITUD": resultado = repo.ConsultarPorFechaSolicitud(p.FechaSol).Solicitudes; break;
+                    case "RANGO_FECHAS": resultado = repo.ConsultarPorFechas(p.FechaIni, p.FechaFin).Solicitudes; break;
+                    default: resultado = new List<SolicitudAptoMedico>(); break;
                 }
             }
             catch (Exception)
@@ -70,11 +60,9 @@ namespace DesarrollosQAS.Pages
             gridSolicitudesAptosMedicos.DataSource = resultado;
         }
 
-        // ── CustomCallback: guarda en Session y dispara DataBind ─────────────────
         protected void gridSolicitudesAptosMedicos_CustomCallback(object sender, ASPxGridViewCustomCallbackEventArgs e)
         {
             var parts = (e.Parameters ?? string.Empty).Split('|');
-            if (parts.Length < 2 || parts[0] != "SEARCH") return;
 
             var p = new BusquedaParams
             {
@@ -85,24 +73,44 @@ namespace DesarrollosQAS.Pages
                 FechaFin = parts.Length > 5 ? parts[5] : string.Empty,
             };
 
-            // Guardar en Session ANTES del DataBind para que DataBinding los lea
             Session[SessionKeyBusqueda] = p;
+
+            var repo = new SolicitudesAptosMedicosRepository();
+            ResultadoConsulta resultado;
 
             try
             {
-                gridSolicitudesAptosMedicos.DataBind();
+                switch (p.Tipo)
+                {
+                    case "ID_SOLICITUD": resultado = repo.ConsultarPorId(p.ValorTexto); break;
+                    case "ID_GLOBAL": resultado = repo.ConsultarPorIdGlobal(p.ValorTexto); break;
+                    case "FECHA_SOLICITUD": resultado = repo.ConsultarPorFechaSolicitud(p.FechaSol); break;
+                    case "RANGO_FECHAS": resultado = repo.ConsultarPorFechas(p.FechaIni, p.FechaFin); break;
+                    default: resultado = repo.ConsultarTodas(); break;
+                }
+
+                var sinResultados = !string.IsNullOrEmpty(resultado.Mensaje);
+                gridSolicitudesAptosMedicos.JSProperties["cpEstadoBusqueda"] = sinResultados ? "sin_resultados" : "ok";
+                gridSolicitudesAptosMedicos.JSProperties["cpTotalRegistros"] = resultado.Solicitudes.Count;
+                gridSolicitudesAptosMedicos.JSProperties["cpJsonRespuesta"] = resultado.JsonRespuesta;
+                if (sinResultados)
+                    gridSolicitudesAptosMedicos.JSProperties["cpMensajeError"] = resultado.Mensaje;
+                gridSolicitudesAptosMedicos.DataSource = resultado.Solicitudes;
             }
             catch (Exception ex)
             {
-                gridSolicitudesAptosMedicos.JSProperties["cpMessageType"] = "error";
-                gridSolicitudesAptosMedicos.JSProperties["cpMessage"] = ex.Message;
-                Session.Remove(SessionKeyBusqueda);
-                gridSolicitudesAptosMedicos.DataBind();
-            }
-        }
+                var jsonError = ex.Data.Contains("JsonRespuesta")
+                    ? ex.Data["JsonRespuesta"]?.ToString()
+                    : string.Format("{{\"error\":\"{0}\"}}", ex.Message.Replace("\"", "\\\""));
 
-        protected void gridSolicitudesAptosMedicos_CustomButtonCallback(object sender, ASPxGridViewCustomButtonCallbackEventArgs e)
-        {
+                gridSolicitudesAptosMedicos.JSProperties["cpEstadoBusqueda"] = "error";
+                gridSolicitudesAptosMedicos.JSProperties["cpMensajeError"] = ex.Message;
+                gridSolicitudesAptosMedicos.JSProperties["cpJsonRespuesta"] = jsonError;
+                Session.Remove(SessionKeyBusqueda);
+                gridSolicitudesAptosMedicos.DataSource = new List<SolicitudAptoMedico>();
+            }
+
+            gridSolicitudesAptosMedicos.DataBind();
         }
 
         protected void gridSolicitudesAptosMedicos_DataBound(object sender, EventArgs e)

@@ -61,6 +61,7 @@
     <Compile Include="Repositorios\SolicitudesAptosMedicosRepository.cs" />
     <Compile Include="Repositorios\SolicitudRHRepository.cs" />
     <Compile Include="Repositorios\UsuarioSistemaRepository.cs" />
+    <Compile Include="ResultadoConsulta.cs" />
     <Compile Include="Rol.cs" />
     <Compile Include="SolicitudAptoMedico.cs" />
     <Compile Include="SolicitudRH.cs" />

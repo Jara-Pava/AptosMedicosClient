@@ -15,24 +15,6 @@ namespace DesarrollosQAS.Pages
     {
 
         /// <summary>
-        /// popupMessages control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::DesarrollosQAS.UserControls.PopupMessages popupMessages;
-
-        /// <summary>
-        /// pcConfirmarEliminacion control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::DevExpress.Web.ASPxPopupControl pcConfirmarEliminacion;
-
-        /// <summary>
         /// ASPxLabel7 control.
         /// </summary>
         /// <remarks>

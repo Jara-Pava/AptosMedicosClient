@@ -25,7 +25,6 @@ namespace DataAccessDesarrollos
         public string Apto { get; set; }
         public DateTime? Fecha_Diagnostico { get; set; }
         public DateTime? Fecha_Vigencia { get; set; }
-        public string Motivo_Cancelacion { get; set; }
         public int? Edad { get; set; }
         public string Sexo { get; set; }
     }
